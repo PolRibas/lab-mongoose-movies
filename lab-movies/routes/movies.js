@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require('../models/Movie');
+const {isMoviesFormFilled} = require('../middlewares/MoviesMiddlewares');
 
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
@@ -13,7 +14,7 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', isMoviesFormFilled, async (req, res, next) => {
     try{
         const { title,genre,plot } = req.body;
         await Movie.create({title,genre,plot});
@@ -47,7 +48,7 @@ router.get('/edit/:id', async (req, res, next) => {
     }
 });
 
-router.post('/edit/:id', async (req, res, next) => {
+router.post('/edit/:id', isMoviesFormFilled, async (req, res, next) => {
     try{
         const { title, genre, plot } = req.body;
         const { id } = req.params;

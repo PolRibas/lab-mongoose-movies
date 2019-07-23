@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Celebrity = require('../models/Celebrity');
+const {isCelebritysFormFilled} = require('../middlewares/CelebritiesMiddlewares');
 
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
@@ -13,7 +14,7 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', isCelebritysFormFilled, async (req, res, next) => {
     try{
         const { name, occupation, catchPhrase } = req.body;
         await Celebrity.create({name,occupation,catchPhrase});
@@ -46,7 +47,7 @@ router.get('/edit/:id', async (req, res, next) => {
     }
 });
 
-router.post('/edit/:id', async (req, res, next) => {
+router.post('/edit/:id', isCelebritysFormFilled, async (req, res, next) => {
     try{
         const { name, occupation, catchPhrase } = req.body;
         const { id } = req.params;
