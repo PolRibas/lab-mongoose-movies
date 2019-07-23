@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require('../models/Movie');
+const Celebrity = require('../models/Celebrity');
 const {isMoviesFormFilled, isIdvalid} = require('../middlewares/MoviesMiddlewares');
 
 /* GET users listing. */
@@ -70,7 +71,25 @@ router.get('/movie/:id',isIdvalid, async (req, res, next) => {
 });
 router.get('/AddCelebrity/:id', isIdvalid, async (req,res,next)=>{
     try{
-        res.render('movies/addCelebrity')
+        const {id} = req.params;
+        const celebrities = await Celebrity.find();
+        const movie = await Movie.findById(id);
+        const actors = movie.actors;
+        const data = {movie, celebrities, actors};
+        res.render('movies/addCelebrity', data)
+    }catch(err){
+        next(err)
+    }
+})
+router.post('/AddCelebrity/:id', async (req,res,next) =>{
+    try{
+        const {id} = req.params;
+        const {idCelebrity} = req.body;
+        
+        await Movie.findByIdAndUpdate(id, {$push: {actors:idCelebrity} }, {new:true});
+
+        res.redirect(`/movies/AddCelebrity/${id}`);
+
     }catch(err){
         next(err)
     }
