@@ -11,16 +11,18 @@ mongoose.connect('mongodb://localhost/adriPolRockIt', {
 const data = [{
     title: 'Ciudad de dios',
     genre: 'Drama',
-    plot: 'Buscape es un gran periodista que explica su infancia en una Favela llamada Ciudad de Dios'
+    plot: 'Buscape es un gran periodista que explica su infancia en una Favela llamada Ciudad de Dios',
+    actors: []
 }, {
     title: 'Scary Movie',
     genre: 'Terror/Comedia',
-    plot: 'Parodia sobre diferentes peliculas de terror como Scream'
+    plot: 'Parodia sobre diferentes peliculas de terror como Scream',
+    actors: []
 }, {
     title: 'Power Ranger',
     genre: 'Ciencia Ficción',
-    plot: 'Jack Power reune a los Power Rangers para luchar contra los typos que se encuentran en nuestros codigos'
-
+    plot: 'Jack Power reune a los Power Rangers para luchar contra los typos que se encuentran en nuestros codigos',
+    actors: []
 }]
 
 async function addThreeCelebritys (data){

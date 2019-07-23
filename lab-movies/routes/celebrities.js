@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Celebrity = require('../models/Celebrity');
-const {isCelebritysFormFilled} = require('../middlewares/CelebritiesMiddlewares');
+const {isCelebritysFormFilled, isIdvalid} = require('../middlewares/CelebritiesMiddlewares');
 
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
@@ -24,7 +24,7 @@ router.post('/', isCelebritysFormFilled, async (req, res, next) => {
     }
 });
 
-router.post('/:id/delete', async(req, res, next) => {
+router.post('/:id/delete',isIdvalid, async(req, res, next) => {
     try{
         const { id } = req.params;
         await Celebrity.findById(id).remove();
@@ -37,7 +37,7 @@ router.post('/:id/delete', async(req, res, next) => {
 router.get('/new', (req, res, next) => {
     res.render('celebrities/new');
 });
-router.get('/edit/:id', async (req, res, next) => {
+router.get('/edit/:id', isIdvalid ,async (req, res, next) => {
     try{
         const { id } = req.params;
         const celebrity = await Celebrity.findById(id);
@@ -47,7 +47,7 @@ router.get('/edit/:id', async (req, res, next) => {
     }
 });
 
-router.post('/edit/:id', isCelebritysFormFilled, async (req, res, next) => {
+router.post('/edit/:id', isIdvalid ,isCelebritysFormFilled, async (req, res, next) => {
     try{
         const { name, occupation, catchPhrase } = req.body;
         const { id } = req.params;
@@ -58,7 +58,7 @@ router.post('/edit/:id', isCelebritysFormFilled, async (req, res, next) => {
     }
 });
 
-router.get('/celebrity/:id', async (req, res, next) => {
+router.get('/celebrity/:id',isIdvalid, async (req, res, next) => {
     try{
         const { id } = req.params;
         const celebrity = await Celebrity.findById(id);

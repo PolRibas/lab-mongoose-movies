@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require('../models/Movie');
-const {isMoviesFormFilled} = require('../middlewares/MoviesMiddlewares');
+const {isMoviesFormFilled, isIdvalid} = require('../middlewares/MoviesMiddlewares');
 
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
@@ -24,7 +24,7 @@ router.post('/', isMoviesFormFilled, async (req, res, next) => {
     }
 });
 
-router.post('/:id/delete', async(req, res, next) => {
+router.post('/:id/delete',isIdvalid, async(req, res, next) => {
     try{
         const { id } = req.params;
         await Movie.findById(id).remove();
@@ -38,7 +38,7 @@ router.get('/new', (req, res, next) => {
     res.render('movies/new');
 });
 
-router.get('/edit/:id', async (req, res, next) => {
+router.get('/edit/:id', isIdvalid, async (req, res, next) => {
     try{
         const { id } = req.params;
         const movie = await Movie.findById(id);
@@ -48,7 +48,7 @@ router.get('/edit/:id', async (req, res, next) => {
     }
 });
 
-router.post('/edit/:id', isMoviesFormFilled, async (req, res, next) => {
+router.post('/edit/:id',isIdvalid, isMoviesFormFilled, async (req, res, next) => {
     try{
         const { title, genre, plot } = req.body;
         const { id } = req.params;
@@ -59,7 +59,7 @@ router.post('/edit/:id', isMoviesFormFilled, async (req, res, next) => {
     }
 });
 
-router.get('/movie/:id', async (req, res, next) => {
+router.get('/movie/:id',isIdvalid, async (req, res, next) => {
     try{
         const { id } = req.params;
         const movie = await Movie.findById(id);
@@ -68,6 +68,12 @@ router.get('/movie/:id', async (req, res, next) => {
         next(err)
     }
 });
-
+router.get('/AddCelebrity/:id', isIdvalid, async (req,res,next)=>{
+    try{
+        res.render('movies/addCelebrity')
+    }catch(err){
+        next(err)
+    }
+})
 
 module.exports = router;

@@ -1,5 +1,5 @@
 'use strict';
-
+const mongoose = require('mongoose');
 const isMoviesFormFilled = (req,res,next) => {
     const {title,genre,plot} = req.body;
     if(!title || !genre || !plot){
@@ -7,5 +7,11 @@ const isMoviesFormFilled = (req,res,next) => {
     }
     next();
 }
-
-module.exports = {isMoviesFormFilled}
+const isIdvalid = (req, res, next) => {
+    const {id} = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.redirect(`/celebrities`)
+    }
+    next();
+}
+module.exports = {isMoviesFormFilled, isIdvalid}
