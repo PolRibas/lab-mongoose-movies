@@ -1,1 +1,13 @@
-<h1>Add celebrity to: {{movie.title}} </h1>
+<h1>Add celebrity to: {{movie.title}}</h1>
+<p>this film has:</p>
+<ul>
+  {{#each actors}}
+    {{this}}
+  {{/each}}
+</ul>
+  {{#each celebrities}}
+  <form action="/movies/AddCelebrity/{{../movie._id}}" method="POST">
+      <input type="text" name="idCelebrity" hidden value="{{id}}">
+      <button type="submit">{{name}}</button>
+  </form>
+  {{/each}}
